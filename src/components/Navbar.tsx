@@ -9,7 +9,7 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 const Navbar = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
 
   return (
@@ -20,7 +20,7 @@ const Navbar = () => {
             GreenCabal
           </Link>
 
-          {isAuthenticated ? (
+          <SignedIn>
             <div className="flex items-center gap-6">
               <Link
                 to="/community"
@@ -35,48 +35,31 @@ const Navbar = () => {
                 Dashboard
               </Link>
               <div className="flex items-center gap-4">
-                <button className="text-[#03ffc3] hover:text-[#00ff3f] transition-colors">
-                  <Bell size={20} />
-                </button>
-                <Link to="/profile">
-                  <User
-                    size={20}
-                    className="text-[#03ffc3] hover:text-[#00ff3f] transition-colors"
-                  />
-                </Link>
-                <button
-                  onClick={() => {
-                    logout();
-                    navigate("/");
-                  }}
-                  className="text-[#03ffc3] hover:text-[#00ff3f] transition-colors"
-                >
-                  <LogOut size={20} />
-                </button>
-                <SignedIn>
-                  <UserButton />
-                </SignedIn>
+                <UserButton>
+                  <UserButton.MenuItems>
+                    <UserButton.Action
+                      label="Profile"
+                      labelIcon={<User size={20} />}
+                      onClick={() => navigate("/profile")}
+                    />
+                  </UserButton.MenuItems>
+                </UserButton>
               </div>
             </div>
-          ) : (
+          </SignedIn>
+
+          <SignedOut>
             <div className="flex items-center gap-4">
-              <SignedOut>
-                <SignInButton />
-              </SignedOut>
-              <Link
-                to="/signin"
-                className="text-[#03ffc3] hover:text-[#00ff3f] transition-colors"
-              >
-                Sign In
-              </Link>
-              <Link
-                to="/signup"
+              <SignInButton />
+
+              <button
+                onClick={() => login({ email: `Clerk@example.com` })}
                 className="px-4 py-2 bg-[#00ff3f] text-[#022424] rounded-lg font-semibold hover:opacity-90 transition-opacity"
               >
-                Get Started
-              </Link>
+                <SignInButton>Get Started</SignInButton>
+              </button>
             </div>
-          )}
+          </SignedOut>
         </div>
       </div>
     </nav>

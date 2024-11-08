@@ -1,20 +1,31 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import LandingPage from './pages/LandingPage';
-import CommunityBoard from './pages/CommunityBoard';
-import Profile from './pages/Profile';
-import Payment from './pages/Payment';
-import Dashboard from './pages/Dashboard';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-import AdminLogin from './pages/AdminLogin';
-import AdminPanel from './pages/AdminPanel';
-import ProtectedRoute from './components/ProtectedRoute';
-import AdminRoute from './components/AdminRoute';
-import { AuthProvider } from './context/AuthContext';
-import { AdminProvider } from './context/AdminContext';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import LandingPage from "./pages/LandingPage";
+import CommunityBoard from "./pages/CommunityBoard";
+import Profile from "./pages/Profile";
+import Payment from "./pages/Payment";
+import Dashboard from "./pages/Dashboard";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import AdminLogin from "./pages/AdminLogin";
+import AdminPanel from "./pages/AdminPanel";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
+import { AuthProvider } from "./context/AuthContext";
+import { AdminProvider } from "./context/AdminContext";
+import { RedirectToSignIn, SignedIn, SignedOut } from "@clerk/clerk-react";
 
+const ProtectedRoutes = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <SignedIn>
+      {children}
+      <SignedOut>
+        <RedirectToSignIn />
+      </SignedOut>
+    </SignedIn>
+  );
+};
 function App() {
   return (
     <BrowserRouter>
@@ -45,37 +56,37 @@ function App() {
               <Route
                 path="/community"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoutes>
                     <Navbar />
                     <CommunityBoard />
-                  </ProtectedRoute>
+                  </ProtectedRoutes>
                 }
               />
               <Route
                 path="/profile"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoutes>
                     <Navbar />
                     <Profile />
-                  </ProtectedRoute>
+                  </ProtectedRoutes>
                 }
               />
               <Route
                 path="/payment"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoutes>
                     <Navbar />
                     <Payment />
-                  </ProtectedRoute>
+                  </ProtectedRoutes>
                 }
               />
               <Route
                 path="/dashboard"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoutes>
                     <Navbar />
                     <Dashboard />
-                  </ProtectedRoute>
+                  </ProtectedRoutes>
                 }
               />
             </Routes>
