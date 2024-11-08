@@ -1,8 +1,13 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { Bell, User, LogOut } from 'lucide-react';
-
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { Bell, User, LogOut } from "lucide-react";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/clerk-react";
 const Navbar = () => {
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
@@ -17,14 +22,14 @@ const Navbar = () => {
 
           {isAuthenticated ? (
             <div className="flex items-center gap-6">
-              <Link 
-                to="/community" 
+              <Link
+                to="/community"
                 className="text-[#03ffc3] hover:text-[#00ff3f] transition-colors"
               >
                 Community
               </Link>
-              <Link 
-                to="/dashboard" 
+              <Link
+                to="/dashboard"
                 className="text-[#03ffc3] hover:text-[#00ff3f] transition-colors"
               >
                 Dashboard
@@ -34,21 +39,30 @@ const Navbar = () => {
                   <Bell size={20} />
                 </button>
                 <Link to="/profile">
-                  <User size={20} className="text-[#03ffc3] hover:text-[#00ff3f] transition-colors" />
+                  <User
+                    size={20}
+                    className="text-[#03ffc3] hover:text-[#00ff3f] transition-colors"
+                  />
                 </Link>
-                <button 
+                <button
                   onClick={() => {
                     logout();
-                    navigate('/');
+                    navigate("/");
                   }}
                   className="text-[#03ffc3] hover:text-[#00ff3f] transition-colors"
                 >
                   <LogOut size={20} />
                 </button>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
               </div>
             </div>
           ) : (
             <div className="flex items-center gap-4">
+              <SignedOut>
+                <SignInButton />
+              </SignedOut>
               <Link
                 to="/signin"
                 className="text-[#03ffc3] hover:text-[#00ff3f] transition-colors"
